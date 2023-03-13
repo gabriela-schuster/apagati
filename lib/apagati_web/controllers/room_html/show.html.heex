@@ -1,0 +1,15 @@
+<.header>
+  Room <%= @room.title %>
+  <:subtitle>This is a room record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/rooms/#{@room}/edit"}>
+      <.button>Edit room</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Title"><%= @room.title %></:item>
+</.list>
+
+<.back navigate={~p"/rooms"}>Back to rooms</.back>
