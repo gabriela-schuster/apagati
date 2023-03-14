@@ -1,5 +1,5 @@
-alias MatrixSDK.API
-alias MatrixSDK.API.Request
+alias MatrixSDK.Client
+alias MatrixSDK.Client.Request
 
 defmodule Apagati.MatrixClient do
   @moduledoc """
@@ -11,24 +11,40 @@ defmodule Apagati.MatrixClient do
 
   @base_server "https://matrix.org"
 
-  require Logger
-
   alias Apagati.MatrixClient.Room
 
   def get_token() do
     response =
       @base_server
       |> Request.register_guest()
-      |> API.do_request()
+      |> Client.do_request()
 
-    Logger.debug("Response:")
-    IO.inspect(response.body)
-    response.body["access_token"]
+    token = get_token_from_response(response)
+    token
   end
 
+  defp get_token_from_response({:ok, %Tesla.Env{body: body}}) do
+    Map.get(body, "access_token")
+  end
+
+  defp get_token_from_response({:error, _response} = error), do: error
 
   defp join_room(room, token) do
+    reponse =
+      @base_server
+      |> Request.join_room(token, room)
+      |> Client.do_request()
 
+    # case response do
+    #   %MatrixSDK.API.Error{} = error ->
+    #     IO.puts(error.message)
+    #     IO.gets("press enter to continue:")
+    #     join_room(room, token)
+
+    #   _ ->
+    #     {:ok, response.body["room_id"]}
+    # end
+    {:ok, 1}
   end
 
 

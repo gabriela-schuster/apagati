@@ -5,6 +5,8 @@ defmodule ApagatiWeb.RoomController do
   alias Apagati.MatrixClient.Room
 
   def index(conn, _params) do
+    token = MatrixClient.get_token()
+    IO.inspect(token)
     rooms = MatrixClient.list_rooms()
     render(conn, :index, rooms: rooms)
   end
