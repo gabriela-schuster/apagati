@@ -7,6 +7,8 @@ defmodule Apagati.MatrixClient do
   """
 
   import Ecto.Query, warn: false
+
+  require Logger
   alias Apagati.Repo
 
   @base_server "https://matrix.org"
@@ -29,23 +31,27 @@ defmodule Apagati.MatrixClient do
 
   defp get_token_from_response({:error, _response} = error), do: error
 
-  defp join_room(room, token) do
-    reponse =
+  def join_room(token, room) do
+    response =
       @base_server
       |> Request.join_room(token, room)
       |> Client.do_request()
 
-    # case response do
-    #   %MatrixSDK.API.Error{} = error ->
-    #     IO.puts(error.message)
-    #     IO.gets("press enter to continue:")
-    #     join_room(room, token)
 
-    #   _ ->
-    #     {:ok, response.body["room_id"]}
-    # end
-    {:ok, 1}
+    Logger.info("room body")
+    data = {:ok, %Tesla.Env{body: body, status: status}} = response
+    IO.inspect(body)
+    body
   end
+
+
+  # defp handle_room_econnect({:ok, %Tesla.Env{body: body, status: status}}) do
+  #   IO.inspect(body)
+  # end
+
+  # defp handle_room_econnect({:ok, %Tesla.Env{body: body, status: 200}}) do
+  #   IO.inspect("ok")
+  # end
 
 
   @doc """

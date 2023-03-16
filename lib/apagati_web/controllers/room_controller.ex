@@ -5,8 +5,8 @@ defmodule ApagatiWeb.RoomController do
   alias Apagati.MatrixClient.Room
 
   def index(conn, _params) do
-    token = MatrixClient.get_token()
-    IO.inspect(token)
+    # can search rooms from matrix
+    # can see romms joined and history
     rooms = MatrixClient.list_rooms()
     render(conn, :index, rooms: rooms)
   end
@@ -28,13 +28,22 @@ defmodule ApagatiWeb.RoomController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    {:ok, matrix_client} = Client.new()
-    room = Client.Room.get(matrix_client, id)
+  def show(conn, %{"id" => room}) do
+    token = MatrixClient.get_token()
+    response = MatrixClient.join_room(token, room)
 
-    # room = MatrixClient.get_room!(id)
+    conn
+    |> show_chat_or_error(response)
+
+    room = MatrixClient.get_room!(room)
 
     render(conn, :show, room: room)
+  end
+
+  defp show_chat_or_error(conn, %{"errcode" => "M_UNKNOWN"}) do
+    conn
+    |> put_flash(:error, "this room doesn't exist")
+    |> redirect(to: "/rooms")
   end
 
   def edit(conn, %{"id" => id}) do

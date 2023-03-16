@@ -1,14 +1,14 @@
 <.header>
   Listing Rooms
   <:actions>
-    <.link href={~p"/rooms/new"}>
-      <.button>New Room</.button>
+    <.link class="text-sky-500" href={~p"/rooms/new"}>
+      search new
     </.link>
   </:actions>
 </.header>
 
 <.table id="rooms" rows={@rooms} row_click={&JS.navigate(~p"/rooms/#{&1}")}>
-  <:col :let={room} label="Title"><%= room.title %></:col>
+  <:col :let={room} label="Rooms"><%= room.title %></:col>
   <:action :let={room}>
     <div class="sr-only">
       <.link navigate={~p"/rooms/#{room}"}>Show</.link>
@@ -21,3 +21,15 @@
     </.link>
   </:action>
 </.table>
+
+<section class="mt-8 grid gap-3 grid-cols-1">
+	<%= for room <- @rooms do %>
+		<.link href={~p"/rooms/#{room}"} class="p-2 rounded-md flex gap-3">
+			<div class="w-1/8 h-full rounded-full p-7 bg-sky-700"></div>
+			<div class="flex justify-center flex-col">
+				<p class="text-zinc-300 font-bold"><%= room.title %></p>
+				<p>Lorem ipsum dolor sit amet consectetur</p>
+			</div>
+		</.link>
+	<% end %>
+</section>

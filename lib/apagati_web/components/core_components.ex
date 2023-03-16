@@ -108,7 +108,7 @@ defmodule ApagatiWeb.CoreComponents do
                   <.link
                     :for={cancel <- @cancel}
                     phx-click={hide_modal(@on_cancel, @id)}
-                    class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                    class="text-sm font-semibold leading-6 text-zinc-600 hover:text-zinc-400"
                   >
                     <%= render_slot(cancel) %>
                   </.link>
@@ -150,8 +150,8 @@ defmodule ApagatiWeb.CoreComponents do
       role="alert"
       class={[
         "fixed hidden top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 shadow-md shadow-zinc-900/5 ring-1",
-        @kind == :info && "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900",
-        @kind == :error && "bg-rose-50 p-3 text-rose-900 shadow-md ring-rose-500 fill-rose-900"
+        @kind == :info && "bg-emerald-900 text-emerald-400 ring-emerald-500 fill-cyan-900",
+        @kind == :error && "bg-rose-900 p-3 text-rose-300 shadow-md ring-rose-500 fill-rose-900"
       ]}
       {@rest}
     >
@@ -237,6 +237,22 @@ defmodule ApagatiWeb.CoreComponents do
   end
 
   @doc """
+  Renders an vertical list of rooms
+  """
+  def rooms_list(assigns) do
+    ~H"""
+    <section class="grid gap-3 grid-cols-1">
+      # TODO: link
+    		<div class="w-1/8 h-full rounded-full p-7 bg-sky-700"></div>
+    		<div class="flex justify-center flex-col">
+    			<p class="text-zinc-300 font-bold">John Doe</p>
+    			<p>Lorem ipsum dolor sit amet consectetur</p>
+    		</div>
+    </section>
+    """
+  end
+
+  @doc """
   Renders a button.
 
   ## Examples
@@ -255,7 +271,7 @@ defmodule ApagatiWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-700 hover:bg-zinc-600 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
         @class
       ]}
@@ -437,7 +453,7 @@ defmodule ApagatiWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8 text-zinc-300">
           <%= render_slot(@inner_block) %>
         </h1>
         <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
@@ -492,27 +508,27 @@ defmodule ApagatiWeb.CoreComponents do
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+          class="relative divide-y divide-zinc-400 border-zinc-200 text-sm leading-6 text-zinc-400 drop-shadow-l shadow-slate-100"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
+          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-700">
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-700 sm:rounded-l-xl" />
+                <span class={["relative", i == 0 && "font-semibold text-zinc-200"]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
               </div>
             </td>
             <td :if={@action != []} class="relative p-0 w-14">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-700 sm:rounded-r-xl" />
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                  class="relative ml-4 font-semibold leading-6 text-zinc-400 hover:text-zinc-200"
                 >
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
@@ -567,7 +583,7 @@ defmodule ApagatiWeb.CoreComponents do
     <div class="mt-16">
       <.link
         navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        class="text-sm font-semibold leading-6 text-zinc-600 hover:text-zinc-400"
       >
         <.icon name="hero-arrow-left-solid" class="w-3 h-3" />
         <%= render_slot(@inner_block) %>
