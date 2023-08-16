@@ -1,35 +1,91 @@
-<.header>
-  Listing Rooms
-  <:actions>
-    <.link class="text-sky-500" href={~p"/rooms/new"}>
-      search new
-    </.link>
-  </:actions>
-</.header>
+<section class="flex gap-3 divide-x divide-zinc-700 h-screen">
 
-<.table id="rooms" rows={@rooms} row_click={&JS.navigate(~p"/rooms/#{&1}")}>
-  <:col :let={room} label="Rooms"><%= room.title %></:col>
-  <:action :let={room}>
-    <div class="sr-only">
-      <.link navigate={~p"/rooms/#{room}"}>Show</.link>
-    </div>
-    <.link navigate={~p"/rooms/#{room}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={room}>
-    <.link href={~p"/rooms/#{room}"} method="delete" data-confirm="Are you sure?">
-      Delete
-    </.link>
-  </:action>
-</.table>
+	<div>
+		<div class="pb-2 pl-2 flex gap-3 align-middle border-b border-b-zinc-700">
+			<.icon name="hero-magnifying-glass"/>
+			<.link href={~p"/rooms/new"}>
+				search...
+			</.link>
+		</div>
+		
+		<section class="grid gap-3 grid-cols-1 divide-y divide-zinc-700">
+			<%= for room <- @rooms do %>
+				<.link href={~p"/rooms/#{room}"} class="p-2 flex gap-3 ">
+					<div class="w-1/12 h-full rounded-full p-7 bg-sky-700"></div>
+					<div class="flex justify-center flex-col">
+						<p class="text-zinc-300 font-bold"><%= room.title %></p>
+						<p>Lorem ipsum dolor sit ameta a a  aa </p>
+					</div>
+				</.link>
+			<% end %>
+		</section>
+	</div>
+	
+	<section class="px-6 flex-1 h-full relative">
 
-<section class="mt-8 grid gap-3 grid-cols-1">
-	<%= for room <- @rooms do %>
-		<.link href={~p"/rooms/#{room}"} class="p-2 rounded-md flex gap-3">
-			<div class="w-1/8 h-full rounded-full p-7 bg-sky-700"></div>
-			<div class="flex justify-center flex-col">
-				<p class="text-zinc-300 font-bold"><%= room.title %></p>
-				<p>Lorem ipsum dolor sit amet consectetur</p>
+		<section>
+			<div class="grid grid-cols-2 border-b border-zinc-700 pb-2">
+				<div>
+					<p class="text-sky-500">John doe</p>
+				</div>
+				<div class="text-right">
+					<.icon name="hero-phone" class="bg-zinc-500 ml-1" />
+					<.icon name="hero-video-camera" class="bg-zinc-500 ml-1"/>
+				</div>
 			</div>
-		</.link>
-	<% end %>
+			
+			<section class="overflow-y-visible max-h-full"> <!-- ! was here -->
+				<!-- <.icon name="hero-arrow-uturn-left"/> -->
+					
+				<!-- companent: theirs -->
+				<div>
+					<p class="text-sky-700 text-sm mt-4">John Doe</p>
+					<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, temporibus.</p>
+				</div>
+		
+				<!-- companent: yours -->
+				<div>
+					<p class="text-right text-sky-700 text-sm mt-4">You</p>
+					<p class="text-right">Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+				</div>
+		
+				<!-- companent: theirs -->
+				<div>
+					<p class="text-sky-700 text-sm mt-4">John Doe</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint beatae iusto ex id voluptate aspernatur facere quam nihil earum. Nesciunt minus illum corporis impedit quaerat magnam voluptatem harum corrupti at!</p>
+				</div>
+				<div>
+					<p class="text-sky-700 text-sm mt-4">John Doe</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint beatae iusto ex id voluptate aspernatur facere quam nihil earum. Nesciunt minus illum corporis impedit quaerat magnam voluptatem harum corrupti at!</p>
+				</div>
+				<div>
+					<p class="text-sky-700 text-sm mt-4">John Doe</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint beatae iusto ex id voluptate aspernatur facere quam nihil earum. Nesciunt minus illum corporis impedit quaerat magnam voluptatem harum corrupti at!</p>
+				</div>
+				<div>
+					<p class="text-sky-700 text-sm mt-4">John Doe</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint beatae iusto ex id voluptate aspernatur facere quam nihil earum. Nesciunt minus illum corporis impedit quaerat magnam voluptatem harum corrupti at!</p>
+				</div>
+				<div>
+					<p class="text-sky-700 text-sm mt-4">John Doe</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint beatae iusto ex id voluptate aspernatur facere quam nihil earum. Nesciunt minus illum corporis impedit quaerat magnam voluptatem harum corrupti at!</p>
+				</div>
+				<div>
+					<p class="text-sky-700 text-sm mt-4">John Doe</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint beatae iusto ex id voluptate aspernatur facere quam nihil earum. Nesciunt minus illum corporis impedit quaerat magnam voluptatem harum corrupti at!</p>
+				</div>
+				<div>
+					<p class="text-sky-700 text-sm mt-4">John Doe</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint beatae iusto ex id voluptate aspernatur facere quam nihil earum. Nesciunt minus illum corporis impedit quaerat magnam voluptatem harum corrupti at!</p>
+				</div>
+
+			</section>
+			
+		</section>
+
+		<div class="w-full mt-8 py-2 px-1 absolute bottom-0 left-3 border-t border-zinc-700">
+			say something...
+		</div>
+
+	</section>
 </section>

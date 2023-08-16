@@ -242,7 +242,7 @@ defmodule ApagatiWeb.CoreComponents do
   def rooms_list(assigns) do
     ~H"""
     <section class="grid gap-3 grid-cols-1">
-      # TODO: link
+      # TODO: link (see icon component for doc)
     		<div class="w-1/8 h-full rounded-full p-7 bg-sky-700"></div>
     		<div class="flex justify-center flex-col">
     			<p class="text-zinc-300 font-bold">John Doe</p>

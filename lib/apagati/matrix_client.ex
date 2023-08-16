@@ -1,5 +1,6 @@
 alias MatrixSDK.Client
 alias MatrixSDK.Client.Request
+alias HTTPoison
 
 defmodule Apagati.MatrixClient do
   @moduledoc """
@@ -11,18 +12,94 @@ defmodule Apagati.MatrixClient do
   require Logger
   alias Apagati.Repo
 
-  @base_server "https://matrix.org"
+  @base_server "https://matrix.org/_matrix/client/v3"
+
+  @base_headers [{"Content-Type", "application/json"}]
 
   alias Apagati.MatrixClient.Room
 
-  def get_token() do
-    response =
-      @base_server
-      |> Request.register_guest()
-      |> Client.do_request()
+  # def get_dummy() do
+  #   body = {
+  #     "type": "m.login.dummy",
+  #     "session": "<session ID>"
+  #   }
 
-    token = get_token_from_response(response)
-    token
+  #   case HTTPoison.post("#{@base_server}/_matrix/client/r0/register?kind=guest", body, @base_headers) do
+  #     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+  #       IO.puts("Request successful. Response body: #{body}")
+
+  #     {:ok, %HTTPoison.Response{status_code: status, body: body}} ->
+  #       IO.puts("Request failed with status code: #{status}. Response body: #{body}")
+
+  #     {:error, error} ->
+  #       IO.puts("Request failed with error: #{inspect(error)}")
+  #   end
+  # end
+
+
+  def login(user, passw, device_name) do
+    body = %{
+      "identifier" => %{
+        "type" => "m.id.user",
+        "user" => user
+      },
+      "initial_device_display_name" => device_name,
+      "password" => passw,
+      "type" => "m.login.password"
+    }
+
+
+    case HTTPoison.post("#{@base_server}/login", body, @base_headers) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        IO.puts("Request successful. Response body: #{body}")
+
+      {:ok, %HTTPoison.Response{status_code: status, body: body}} ->
+        IO.puts("Request failed with status code: #{status}. Response body: #{body}")
+
+      {:error, error} ->
+        IO.puts("Request failed with error: #{inspect(error)}")
+    end
+  end
+
+  def register(user, passw, device_name) do
+    body = %{
+      "auth" => %{
+        "type" => "m.login.password"
+      },
+      "initial_device_display_name" => device_name,
+      "password" => passw,
+      "username" => user
+    }
+    body = Poison.encode!(body)
+
+    case HTTPoison.post("#{@base_server}/register", body, @base_headers) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        IO.puts("Request successful. Response body: #{body}")
+
+      {:ok, %HTTPoison.Response{status_code: status, body: body}} ->
+        IO.puts("Request failed with status code: #{status}. Response body: #{body}")
+
+      {:error, error} ->
+        IO.puts("Request failed with error: #{inspect(error)}")
+
+      _ ->
+        IO.puts("Unexpected response body: #{inspect(body)}")
+    end
+  end
+
+  def get_token() do
+    body = ""
+
+    case HTTPoison.post("#{@base_server}/_matrix/client/r0/register?kind=guest", body, @base_headers) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: response_body}} ->
+        IO.puts("Request successful. Response body: #{response_body}")
+
+      {:ok, %HTTPoison.Response{status_code: status, body: response_body}} ->
+        IO.puts("Request failed with status code: #{status}. Response body: #{response_body}")
+
+      {:error, error} ->
+        IO.puts("Request failed with error: #{inspect(error)}")
+    end
   end
 
   defp get_token_from_response({:ok, %Tesla.Env{body: body}}) do
@@ -36,7 +113,6 @@ defmodule Apagati.MatrixClient do
       @base_server
       |> Request.join_room(token, room)
       |> Client.do_request()
-
 
     Logger.info("room body")
     data = {:ok, %Tesla.Env{body: body, status: status}} = response
